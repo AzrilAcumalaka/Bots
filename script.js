@@ -1,44 +1,40 @@
-body {
-    background-color: black;
-    color: lime;
-    font-family: monospace;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+document.addEventListener("DOMContentLoaded", function () {
+    const inputField = document.getElementById("command-input");
+    const outputDiv = document.getElementById("output");
 
-#terminal {
-    width: 80%;
-    max-width: 600px;
-    height: 400px;
-    background-color: black;
-    border: 2px solid lime;
-    padding: 10px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-}
+    inputField.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            const command = inputField.value.trim();
+            inputField.value = "";
 
-#output {
-    flex-grow: 1;
-    overflow-y: auto;
-}
+            if (command) {
+                printOutput(`> ${command}`);
+                executeCommand(command);
+            }
+        }
+    });
 
-#input-line {
-    display: flex;
-}
+    function printOutput(text) {
+        const newLine = document.createElement("div");
+        newLine.textContent = text;
+        outputDiv.appendChild(newLine);
+        outputDiv.scrollTop = outputDiv.scrollHeight;
+    }
 
-.prompt {
-    color: lime;
-}
-
-#command-input {
-    background: none;
-    border: none;
-    color: lime;
-    font-family: monospace;
-    width: 100%;
-    outline: none;
-}
+    function executeCommand(command) {
+        switch (command.toLowerCase()) {
+            case "help":
+                printOutput("Perintah yang tersedia: help, about, clear");
+                break;
+            case "about":
+                printOutput("Ini adalah website console sederhana.");
+                break;
+            case "clear":
+                outputDiv.innerHTML = "";
+                break;
+            default:
+                printOutput("Perintah tidak dikenali. Ketik 'help' untuk daftar perintah.");
+                break;
+        }
+    }
+});
